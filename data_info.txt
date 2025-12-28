@@ -1,0 +1,144 @@
+```python
+import pandas as pd
+
+# Load the datasets
+try:
+    doc_check_df = pd.read_csv('Document-check-report.csv')
+    facial_check_df = pd.read_csv('Facial-similarity-check-report.csv')
+
+    print("--- Document Check Report ---")
+    print(doc_check_df.info())
+    print(doc_check_df.head())
+
+    print("\n--- Facial Similarity Check Report ---")
+    print(facial_check_df.info())
+    print(facial_check_df.head())
+except Exception as e:
+    print(e)
+
+
+```
+
+```text
+--- Document Check Report ---
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 176404 entries, 0 to 176403
+Data columns (total 18 columns):
+ #   Column                              Non-Null Count   Dtype 
+---  ------                              --------------   ----- 
+ 0   user_id                             176404 non-null  object
+ 1   result                              176404 non-null  object
+ 2   visual_authenticity_result          150290 non-null  object
+ 3   image_integrity_result              176403 non-null  object
+ 4   face_detection_result               150261 non-null  object
+ 5   image_quality_result                176403 non-null  object
+ 6   created_at                          176404 non-null  object
+ 7   supported_document_result           175900 non-null  object
+ 8   conclusive_document_quality_result  95217 non-null   object
+ 9   colour_picture_result               95222 non-null   object
+ 10  data_validation_result              142974 non-null  object
+ 11  data_consistency_result             92229 non-null   object
+ 12  data_comparison_result              2548 non-null    object
+ 13  attempt_id                          176404 non-null  object
+ 14  police_record_result                144557 non-null  object
+ 15  compromised_document_result         45506 non-null   object
+ 16  properties                          176404 non-null  object
+ 17  sub_result                          176404 non-null  object
+dtypes: object(18)
+memory usage: 24.2+ MB
+None
+                            user_id    result visual_authenticity_result image_integrity_result face_detection_result image_quality_result            created_at supported_document_result conclusive_document_quality_result colour_picture_result data_validation_result data_consistency_result data_comparison_result                        attempt_id police_record_result compromised_document_result                                                                                                                                     properties sub_result
+0  ab23fae164e34af0a1ad1423ce9fd9f0  consider                   consider                  clear                 clear                clear  2021-06-20T23:12:57Z                     clear                                NaN                   NaN                  clear                   clear                    NaN  050a0596de424fab83c433eaa18b3f8d                clear                         NaN                {'gender': 'Male', 'nationality': 'IRL', 'document_type': 'passport', 'date_of_expiry': '2019-08-12', 'issuing_country': 'IRL'}    caution
+1  15a84e8951254011b47412fa4e8f65b8     clear                      clear                  clear                 clear                clear  2021-06-20T23:16:04Z                     clear                                NaN                   NaN                  clear                     NaN                    NaN  f69c1e5f45a64e50a26740b9bfb978b7                clear                         NaN                             {'gender': 'Female', 'document_type': 'driving_licence', 'date_of_expiry': '2023-02-28', 'issuing_country': 'GBR'}      clear
+2  ffb82fda52b041e4b9af9cb4ef298c85     clear                      clear                  clear                 clear                clear  2021-06-20T17:59:49Z                     clear                                NaN                   NaN                  clear                   clear                    NaN  f9f84f3055714d8e8f7419dc984d1769                clear                         NaN                {'gender': 'Male', 'nationality': 'ITA', 'document_type': 'passport', 'date_of_expiry': '2018-06-09', 'issuing_country': 'ITA'}      clear
+3  bd4a8b3e3601427e88aa1d9eab9f4290     clear                      clear                  clear                 clear                clear  2021-06-20T17:59:38Z                     clear                                NaN                   NaN                  clear                   clear                    NaN  10a54a1ecf794404be959e030f11fef6                clear                         NaN                             {'gender': 'Male', 'issuing_date': '2007-08', 'document_type': 'national_identity_card', 'issuing_country': 'FRA'}      clear
+4  f52ad1c7e69543a9940c3e7f8ed28a39     clear                      clear                  clear                 clear                clear  2021-06-20T18:08:09Z                     clear                                NaN                   NaN                  clear                   clear                    NaN  1f320d1d07de493292b7e0d5ebfb1cb9                clear                         NaN  {'gender': 'Male', 'nationality': 'POL', 'document_type': 'national_identity_card', 'date_of_expiry': '2019-05-29', 'issuing_country': 'POL'}      clear
+
+--- Facial Similarity Check Report ---
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 176404 entries, 0 to 176403
+Data columns (total 10 columns):
+ #   Column                         Non-Null Count   Dtype  
+---  ------                         --------------   -----  
+ 0   user_id                        176404 non-null  object 
+ 1   result_facial                  176403 non-null  object 
+ 2   sub_result_doc                 176404 non-null  object 
+ 3   face_comparison_result         166007 non-null  object 
+ 4   created_at                     176404 non-null  object 
+ 5   Unnamed: 5                     0 non-null       float64
+ 6   facial_image_integrity_result  175941 non-null  object 
+ 7   visual_authenticity_result     150290 non-null  object 
+ 8   properties                     176404 non-null  object 
+ 9   attempt_id                     176404 non-null  object 
+dtypes: float64(1), object(9)
+memory usage: 13.5+ MB
+None
+                            user_id result_facial sub_result_doc face_comparison_result            created_at  Unnamed: 5 facial_image_integrity_result visual_authenticity_result properties                        attempt_id
+0  ab23fae164e34af0a1ad1423ce9fd9f0         clear        caution                  clear  2021-06-20T23:12:58Z         NaN                         clear                   consider         {}  050a0596de424fab83c433eaa18b3f8d
+1  15a84e8951254011b47412fa4e8f65b8         clear          clear                  clear  2021-06-20T23:16:04Z         NaN                         clear                      clear         {}  f69c1e5f45a64e50a26740b9bfb978b7
+2  ffb82fda52b041e4b9af9cb4ef298c85         clear          clear                  clear  2021-06-20T17:59:49Z         NaN                         clear                      clear         {}  f9f84f3055714d8e8f7419dc984d1769
+3  bd4a8b3e3601427e88aa1d9eab9f4290         clear          clear                  clear  2021-06-20T17:59:39Z         NaN                         clear                      clear         {}  10a54a1ecf794404be959e030f11fef6
+4  f52ad1c7e69543a9940c3e7f8ed28a39         clear          clear                  clear  2021-06-20T18:08:09Z         NaN                         clear                      clear         {}  1f320d1d07de493292b7e0d5ebfb1cb9
+
+
+```
+
+Based on the two CSV files you uploaded, here is a detailed breakdown of every column, its purpose, and how it relates to your "Pass Rate" KPI analysis.
+
+The dataset is split into two parts: one for the **Document Check** (scanning the ID) and one for the **Facial Similarity Check** (comparing the selfie to the ID).
+
+### 1. File: `Document-check-report.csv`
+
+This dataset tracks the validity of the ID document uploaded by the applicant.
+
+* **`user_id`**: The unique ID for a specific applicant. You will use this to join data between the two files.
+* **`result`**: The final verdict of the document check.
+* *Values:* Typically `clear` (passed) or `consider` (failed/needs review). This is a critical column for calculating your pass rate.
+
+
+* **`visual_authenticity_result`**: Checks if the document appears to be a real, physical object. It detects things like "screen replay" (picture of a screen), photocopies, or tampering.
+* **`image_integrity_result`**: A basic technical check to ensure the image file itself is valid, not corrupted, and processed correctly.
+* **`face_detection_result`**: Indicates if the system successfully found a face on the ID document. If this fails, the facial similarity check cannot happen.
+* **`image_quality_result`**: Checks if the image is sharp enough, has good lighting, and isn't too blurry to be read.
+* **`created_at`**: The timestamp (UTC) when the check was performed. This is crucial for plotting your "decline over time" chart.
+* **`supported_document_result`**: Checks if the uploaded document type (e.g., Passport, Driving Licence) is accepted by your system.
+* **`conclusive_document_quality_result`**: A higher-standard quality check. Even if an image is "readable," it might not be high quality enough for definitive fraud checks.
+* **`colour_picture_result`**: Checks if the image is in color. Many systems reject black-and-white photocopies.
+* **`data_validation_result`**: Validates the logic of the data extracted (e.g., checks if the expiry date is in the future).
+* **`data_consistency_result`**: Cross-references information on the document. For example, it checks if the Machine Readable Zone (MRZ) code at the bottom matches the printed text.
+* **`data_comparison_result`**: (If used) Compares the data on the document against external databases or other provided info.
+* **`attempt_id`**: A unique ID for this specific check. Since you mentioned each user has **2 attempts**, this allows you to see if a user failed once and then passed, or failed both times.
+* **`police_record_result`**: Checks if the document is flagged in police databases (stolen/lost).
+* **`compromised_document_result`**: Checks global databases to see if this specific document image has been used in known fraud attacks before.
+* **`properties`**: **Important Column.** This contains nested JSON data with details like `nationality`, `document_type`, `gender`, and `issuing_country`. You will need to extract this data to see if the decline is specific to a certain country or document type (e.g., "French Passports").
+* **`sub_result`**: A granular status often giving more detail than the main `result` (e.g., `caution` vs `clear`).
+
+---
+
+### 2. File: `Facial-similarity-check-report.csv`
+
+This dataset tracks the result of the "Selfie" check and its comparison to the ID photo.
+
+* **`user_id`**: Links back to the applicant.
+* **`result_facial`**: The final verdict of the facial check.
+* *Values:* `clear` (passed) or `consider` (failed). Both this and the document `result` must be `clear` for a "Pass."
+
+
+* **`sub_result_doc`**: This appears to be a copy of the document check result (`sub_result`) for quick reference.
+* **`face_comparison_result`**: The core biometric check. It scores how closely the face in the selfie matches the face on the ID document.
+* **`created_at`**: Timestamp of the facial check.
+* **`facial_image_integrity_result`**: Checks if the selfie image file is valid and not corrupted.
+* **`visual_authenticity_result`**: In this context, it is a "Liveness Check." It checks if the selfie is of a real live person and not a photo of a screen or a printed photo (spoofing).
+* **`properties`**: Metadata for the facial check (often empty, but check for values).
+* **`attempt_id`**: The unique ID for this facial check attempt.
+* **`Unnamed: 5`**: An empty column (artifact of the CSV export), safe to ignore.
+
+### Summary of How to Use This Data:
+
+To analyze the **Pass Rate Decline**, you should:
+
+1. **Merge** the two files on `user_id` and `attempt_id`.
+2. **Filter** by `created_at` to see trends over days/weeks.
+3. **Calculate Pass Rate**: Count users where **both** `result` (document) AND `result_facial` (facial) are `"clear"`.
+4. **Dig into Failures**: If the rate is dropping, look at the specific failure columns (e.g., is `visual_authenticity_result` failing more? Or is it `image_quality_result`?).
+5. **Segment**: Use the `properties` column to see if the failures are coming from a specific `nationality` or `document_type`.

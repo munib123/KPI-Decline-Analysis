@@ -1,0 +1,82 @@
+Based on the two CSV files you uploaded, here is a detailed breakdown of every column, its purpose, and how it relates to your "Pass Rate" KPI analysis.
+
+The dataset is split into two parts: one for the Document Check (scanning the ID) and one for the Facial Similarity Check (comparing the selfie to the ID).
+
+1. File: Document-check-report.csv
+This dataset tracks the validity of the ID document uploaded by the applicant.
+
+user_id: The unique ID for a specific applicant. You will use this to join data between the two files.
+
+result: The final verdict of the document check.
+
+Values: Typically clear (passed) or consider (failed/needs review). This is a critical column for calculating your pass rate.
+
+visual_authenticity_result: Checks if the document appears to be a real, physical object. It detects things like "screen replay" (picture of a screen), photocopies, or tampering.
+
+image_integrity_result: A basic technical check to ensure the image file itself is valid, not corrupted, and processed correctly.
+
+face_detection_result: Indicates if the system successfully found a face on the ID document. If this fails, the facial similarity check cannot happen.
+
+image_quality_result: Checks if the image is sharp enough, has good lighting, and isn't too blurry to be read.
+
+created_at: The timestamp (UTC) when the check was performed. This is crucial for plotting your "decline over time" chart.
+
+supported_document_result: Checks if the uploaded document type (e.g., Passport, Driving Licence) is accepted by your system.
+
+conclusive_document_quality_result: A higher-standard quality check. Even if an image is "readable," it might not be high quality enough for definitive fraud checks.
+
+colour_picture_result: Checks if the image is in color. Many systems reject black-and-white photocopies.
+
+data_validation_result: Validates the logic of the data extracted (e.g., checks if the expiry date is in the future).
+
+data_consistency_result: Cross-references information on the document. For example, it checks if the Machine Readable Zone (MRZ) code at the bottom matches the printed text.
+
+data_comparison_result: (If used) Compares the data on the document against external databases or other provided info.
+
+attempt_id: A unique ID for this specific check. Since you mentioned each user has 2 attempts, this allows you to see if a user failed once and then passed, or failed both times.
+
+police_record_result: Checks if the document is flagged in police databases (stolen/lost).
+
+compromised_document_result: Checks global databases to see if this specific document image has been used in known fraud attacks before.
+
+properties: Important Column. This contains nested JSON data with details like nationality, document_type, gender, and issuing_country. You will need to extract this data to see if the decline is specific to a certain country or document type (e.g., "French Passports").
+
+sub_result: A granular status often giving more detail than the main result (e.g., caution vs clear).
+
+2. File: Facial-similarity-check-report.csv
+This dataset tracks the result of the "Selfie" check and its comparison to the ID photo.
+
+user_id: Links back to the applicant.
+
+result_facial: The final verdict of the facial check.
+
+Values: clear (passed) or consider (failed). Both this and the document result must be clear for a "Pass."
+
+sub_result_doc: This appears to be a copy of the document check result (sub_result) for quick reference.
+
+face_comparison_result: The core biometric check. It scores how closely the face in the selfie matches the face on the ID document.
+
+created_at: Timestamp of the facial check.
+
+facial_image_integrity_result: Checks if the selfie image file is valid and not corrupted.
+
+visual_authenticity_result: In this context, it is a "Liveness Check." It checks if the selfie is of a real live person and not a photo of a screen or a printed photo (spoofing).
+
+properties: Metadata for the facial check (often empty, but check for values).
+
+attempt_id: The unique ID for this facial check attempt.
+
+Unnamed: 5: An empty column (artifact of the CSV export), safe to ignore.
+
+Summary of How to Use This Data:
+To analyze the Pass Rate Decline, you should:
+
+Merge the two files on user_id and attempt_id.
+
+Filter by created_at to see trends over days/weeks.
+
+Calculate Pass Rate: Count users where both result (document) AND result_facial (facial) are "clear".
+
+Dig into Failures: If the rate is dropping, look at the specific failure columns (e.g., is visual_authenticity_result failing more? Or is it image_quality_result?).
+
+Segment: Use the properties column to see if the failures are coming from a specific nationality or document_type.
